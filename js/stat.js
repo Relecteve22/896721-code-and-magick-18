@@ -64,12 +64,16 @@ var drawColumn = function (ctx, name, time, index) {
   //   return Math.floor(number);
   // };
 
-  // var jfi = 50;
-  // var numvk = 100;
-  // for (var i = 0; i < name.length; i++) {
-  //   ctx.fillRect(numvk + jfi, 80, 40, (MAX_COLUMN_HEIGHT * Math.floor(time[i])) / maxTime);
-  //   jfi = jfi + 50;
-  // }
+  var getColumnY = function (players, timeText, indexPlayer) {
+    for (var i = 0; i < players.length; i++) {
+      // var number = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * Math.floor(timeText[i])) / maxTime);  для проверки
+      if (i === indexPlayer) {
+        var numberMax = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * Math.floor(timeText[indexPlayer])) / maxTime);
+      }
+      // console.log(Math.floor(number)); для проверки
+    }
+    return Math.floor(numberMax);
+  };
 
   // var getColumnTimeY = function () { ----------
   //   return getColumnY() - OFFSET_TEXT_FROM_COLUMNS; ----------
@@ -78,13 +82,13 @@ var drawColumn = function (ctx, name, time, index) {
   // Наша формула для X: index * ШК + index * ОК — можно написать функцию getColumnX +
   // Наша формула для Y имени: ? — можно написать функцию getColumnNameY +
   // Наша формуля для Y колонки: ? — можно написать функцию getColumnY
-  // Наша формула для Y времени: YКолонки - отступТекстаОтКолонки (минус потому что координаты идут сверху внизу) +
+  // Наша формула для Y времени: YКолонки - отступТекстаОтКолонки (минус потому что координаты идут сверху внизу)
   //
 
   // Пишем имя
   drawText(ctx, name, getColumnX(index), getColumnNameY());
   // Пишем время
-  // drawText(ctx, Math.floor(time[i]), getColumnX(index), вычисленныйYДляВремени); ----------
+  // drawText(ctx, Math.floor(time[i]), getColumnX(index), вычисленныйYДляВремени); --------
   //   drawText(ctx, округленноеВремя, getColumnX(index), вычисленныйYДляВремени);
 
   // Рисуем колонку, внутри будет простой ctx.fillRect
@@ -104,16 +108,4 @@ window.renderStatistics = function (ctx, names, times) {
   drawText(ctx, 'Список результатов:', 120, 55);
 
   drawColumns(ctx, names, times);
-
-  // временно здесь, потом будет в функции drawColumn
-  var maxTime = getMaxElement(times);
-  var getColumnY = function () {
-    for (var i = 0; i < names.length; i++) {
-      var number = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * Math.floor(times[i])) / maxTime);
-      console.log(Math.floor(number));
-    }
-    return Math.floor(number);
-  };
-  console.log(getColumnY());
-  // до этого места
 };
