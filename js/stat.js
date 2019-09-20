@@ -14,6 +14,7 @@ var COLUMN_WIDTH = 40;
 var MAX_COLUMN_HEIGHT = 150;
 var OFFSET_TEXT_FROM_COLUMNS = 30;
 var PADDING_TOP = 50;
+var PADDING_LEFT = 130;
 var TEXT_HEIGHT = 16;
 
 var drawCloud = function (ctx, x, y, color) {
@@ -40,28 +41,33 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+// function getRandomInt(min, max) {
+//   min = Math.ceil(min);
+//   max = Math.floor(max);
+//   return Math.floor(Math.random() * (max - min + 1)) + min;
+// }
 
 var drawColumns = function (ctx, names, times) {
   for (var i = 0; i < names.length; i++) {
-    drawColumn(ctx, names[i], times[i], i);
+    drawColumn(ctx, names[i], times[i], times, i);
   }
 };
 
-var drawColumn = function (ctx, name, time, index) {
-  var maxTime = getMaxElement(time);
+var drawColumn = function (ctx, name, time, timesArray, index) {
+  var maxTime = getMaxElement(timesArray);
 
   var getColumnX = function (i) {
-    return 130 + (i * COLUMN_WIDTH + i * GAP_COLUMN);
+    return PADDING_LEFT + (i * COLUMN_WIDTH + i * GAP_COLUMN);
   };
 
   var getColumnNameY = function () {
     return PADDING_TOP + MAX_COLUMN_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + 20;
   };
+
+  var getColumnY = function (timeText) {
+    return Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * timeText) / maxTime));
+  };
+  ctx.fillRect(getColumnX(index), getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
 
   // var filterNames = function (array) {
   //   for (var g = 0; g < array.length; g++) {
@@ -130,26 +136,4 @@ window.renderStatistics = function (ctx, names, times) {
   drawText(ctx, 'Список результатов:', 120, 55);
 
   drawColumns(ctx, names, times);
-
-  // ---
-
-  var maxTime = getMaxElement(times);
-
-  var getColumnX = function (i) {
-    return 130 + (i * COLUMN_WIDTH + i * GAP_COLUMN);
-  };
-
-  var getColumnY = function (players, timeText, indexPlayer) {
-    for (var i = 0; i < players.length; i++) {
-      // var number = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * Math.floor(timeText[i])) / maxTime);  для проверки
-      if (i === indexPlayer) {
-        var numberMax = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * timeText[indexPlayer]) / maxTime);
-      }
-      // console.log(Math.floor(number)); для проверки
-    }
-    return Math.floor(numberMax);
-  };
-  for (var i = 0; i < names.length; i++) {
-    ctx.fillRect(getColumnX(i), getColumnY(names, times, i), 40, (MAX_COLUMN_HEIGHT * times[i]) / maxTime);
-  }
 };
