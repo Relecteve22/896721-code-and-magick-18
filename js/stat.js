@@ -12,9 +12,9 @@ var TEXT_FONT = '16px PT Mono';
 var COLOR_TEXT = '#000';
 var COLUMN_WIDTH = 40;
 var MAX_COLUMN_HEIGHT = 150;
-var OFFSET_TEXT_FROM_COLUMNS = 30;
-var PADDING_TOP = 50;
-var PADDING_LEFT = 130;
+var OFFSET_TEXT_FROM_COLUMNS = 20;
+var PADDING_TOP = 60;
+var PADDING_LEFT = 145;
 var TEXT_HEIGHT = 16;
 
 var drawCloud = function (ctx, x, y, color) {
@@ -60,41 +60,17 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
     return PADDING_LEFT + (i * COLUMN_WIDTH + i * GAP_COLUMN);
   };
 
+  var getColumnY = function (timeText) {
+    return Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * timeText) / maxTime));
+  };
+
   var getColumnNameY = function () {
     return PADDING_TOP + MAX_COLUMN_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + 20;
   };
 
-  var getColumnY = function (timeText) {
-    return Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * timeText) / maxTime));
+  var getColumnTimeY = function (timeIndex) {
+    return getColumnY(timeIndex) - OFFSET_TEXT_FROM_COLUMNS;
   };
-  ctx.fillRect(getColumnX(index), getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
-
-  // var filterNames = function (array) {
-  //   for (var g = 0; g < array.length; g++) {
-  //     if (array[g] === 'Вы') {
-  //       array[g] = array[0];
-  //     }
-  //   }
-  //   return array;
-  // };
-
-  // var getColumnY = function () {
-  //   for (var i = 0; i < names.length; i++) {
-  //     var number = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * Math.floor(times[i])) / maxTime);
-  //   }
-  //   return Math.floor(number);
-  // };
-
-  // var getColumnY = function (players, timeText, indexPlayer) {
-  //   for (var i = 0; i < players.length; i++) {
-  //     // var number = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * Math.floor(timeText[i])) / maxTime);  для проверки
-  //     if (i === indexPlayer) {
-  //       var numberMax = PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * Math.floor(timeText[indexPlayer])) / maxTime);
-  //     }
-  //     // console.log(Math.floor(number)); для проверки
-  //   }
-  //   return Math.floor(numberMax);
-  // };
 
   // var jfi = 50;
   // var numvk = 100;
@@ -103,21 +79,15 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
   //   jfi = jfi + 50;
   // }
 
-  // var getColumnTimeY = function () { ----------
-  //   return getColumnY() - OFFSET_TEXT_FROM_COLUMNS; ----------
-  // }; ----------
-
   // Наша формула для X: index * ШК + index * ОК — можно написать функцию getColumnX +
   // Наша формула для Y имени: ? — можно написать функцию getColumnNameY +
-  // Наша формуля для Y колонки: ? — можно написать функцию getColumnY
-  // Наша формула для Y времени: YКолонки - отступТекстаОтКолонки (минус потому что координаты идут сверху внизу)
+  // Наша формуля для Y колонки: ? — можно написать функцию getColumnY +
+  // Наша формула для Y времени: YКолонки - отступТекстаОтКолонки (минус потому что координаты идут сверху внизу) +
   //
 
-  // Пишем имя
   drawText(ctx, name, getColumnX(index), getColumnNameY());
-  // Пишем время
-  // drawText(ctx, Math.floor(time[i]), getColumnX(index), вычисленныйYДляВремени); --------
-  //   drawText(ctx, округленноеВремя, getColumnX(index), вычисленныйYДляВремени);
+  drawText(ctx, Math.floor(time), getColumnX(index), getColumnTimeY(time));
+  ctx.fillRect(getColumnX(index), getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
 
   // Рисуем колонку, внутри будет простой ctx.fillRect
   // Тебе понадобится функция, которая будет получать текст в зависимости от имени
