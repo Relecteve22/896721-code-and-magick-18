@@ -73,7 +73,7 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
   };
 
   var getColorColumn = function () {
-    return 'hsl(240, ' + getRandomInt(100, 255) + '%, ' + '100%)';
+    return 'hsl(240, ' + getRandomInt(1, 100) + '%, ' + '100%)';
   };
 
   // осталось:
@@ -99,6 +99,7 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
   if (name === 'Вы') {
     ctx.fillStyle = 'rgba(255, 0, 0, 1)';
   } else {
+    console.log(getColorColumn());
     ctx.fillStyle = getColorColumn();
   }
 
