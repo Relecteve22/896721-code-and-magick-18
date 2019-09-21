@@ -41,11 +41,11 @@ var getMaxElement = function (arr) {
   return maxElement;
 };
 
-// function getRandomInt(min, max) {
-//   min = Math.ceil(min);
-//   max = Math.floor(max);
-//   return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 var drawColumns = function (ctx, names, times) {
   for (var i = 0; i < names.length; i++) {
@@ -72,6 +72,15 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
     return getColumnY(timeIndex) - OFFSET_TEXT_FROM_COLUMNS;
   };
 
+  var getColorColumn = function () {
+    return 'hsl(240' + getRandomInt(100, 255) + '%', '100% )';
+    // return 'rgb(0, 0, ' + getRandomInt(100, 255) + ')';
+  };
+
+  // осталось:
+  // вывести колонку на первое место с именем 'вы'
+  // и зависимости от колонки показовать цвет
+
   // var jfi = 50;
   // var numvk = 100;
   // for (var i = 0; i < name.length; i++) {
@@ -87,6 +96,13 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
 
   drawText(ctx, name, getColumnX(index), getColumnNameY());
   drawText(ctx, Math.floor(time), getColumnX(index), getColumnTimeY(time));
+
+  if (name === 'Вы') {
+    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+  } else {
+    ctx.fillStyle = getColorColumn();
+  }
+
   ctx.fillRect(getColumnX(index), getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
 
   // Рисуем колонку, внутри будет простой ctx.fillRect
@@ -101,6 +117,14 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
 window.renderStatistics = function (ctx, names, times) {
   drawCloud(ctx, COORDINATE_X_CLOUD + GAP_CLOUD, COORDINATE_Y_CLOUD + GAP_CLOUD, COLOR_SHADEOW);
   drawCloud(ctx, COORDINATE_X_CLOUD, COORDINATE_Y_CLOUD, COLOR_CLOUD);
+
+  ctx.beginPath();
+  ctx.moveTo(100, 10);
+  ctx.lineTo(100, 280);
+  ctx.lineTo(520, 280);
+  ctx.lineTo(520, 10);
+  ctx.lineTo(100, 10);
+  ctx.stroke();
 
   drawText(ctx, 'Ура вы победили!', 120, 35);
   drawText(ctx, 'Список результатов:', 120, 55);
