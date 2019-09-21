@@ -73,8 +73,7 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
   };
 
   var getColorColumn = function () {
-    return 'hsl(240' + getRandomInt(100, 255) + '%', '100% )';
-    // return 'rgb(0, 0, ' + getRandomInt(100, 255) + ')';
+    return 'hsl(240, ' + getRandomInt(100, 255) + '%, ' + '100%)';
   };
 
   // осталось:
