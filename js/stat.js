@@ -75,13 +75,17 @@ window.renderStatistics = function (ctx, names, times) {
   drawCloud(ctx, COORDINATE_X_CLOUD + GAP_CLOUD, COORDINATE_Y_CLOUD + GAP_CLOUD, COLOR_SHADEOW);
   drawCloud(ctx, COORDINATE_X_CLOUD, COORDINATE_Y_CLOUD, COLOR_CLOUD);
 
-  ctx.beginPath();
-  ctx.moveTo(100, 10);
-  ctx.lineTo(100, 280);
-  ctx.lineTo(520, 280);
-  ctx.lineTo(520, 10);
-  ctx.lineTo(100, 10);
-  ctx.stroke();
+  var drawBorder = function () {
+    ctx.beginPath();
+    ctx.moveTo(100, 10);
+    ctx.lineTo(100, 280);
+    ctx.lineTo(520, 280);
+    ctx.lineTo(520, 10);
+    ctx.lineTo(100, 10);
+    ctx.stroke();
+  };
+
+  drawBorder();
 
   drawText(ctx, 'Ура вы победили!', 120, 35);
   drawText(ctx, 'Список результатов:', 120, 55);
