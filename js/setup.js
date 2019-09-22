@@ -17,7 +17,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 var getRandomArray = function (array) {
-  return array[getRandomInt(0, array.length)];
+  return array[getRandomInt(0, array.length - 1)];
 };
 
 var getWizards = function () {
@@ -29,7 +29,7 @@ var getWizards = function () {
   };
 };
 
-var getArray = function () {
+var creatArray = function () {
   var wizards = [];
   for (var i = 0; i < NAME_WIZARDS.length; i++) {
     wizards[i] = getWizards();
@@ -40,16 +40,17 @@ var getArray = function () {
 var renderWizard = function (wizard) {
   var wizardElement = similarWizardTemplate.cloneNode(true);
 
-  wizardElement.querySelector('.setup-similar-label').textContent = wizard[i].name + wizard[i].surName;
+  wizardElement.querySelector('.setup-similar-label').textContent = wizard[i].name + ' ' + wizard[i].surName;
   wizardElement.querySelector('.wizard-coat').style.fill = wizard[i].coatColor;
   wizardElement.querySelector('.wizard-eyes').style.fill = wizard[i].eyesColor;
 
   return wizardElement;
 };
 
-for (var i = 0; i < NAME_WIZARDS.length; i++) {
-  fragment.appendChild(renderWizard(getArray()));
+for (var i = 0; i < 4; i++) {
+  fragment.appendChild(renderWizard(creatArray()));
 }
+console.log(creatArray());
 similarListElement.appendChild(fragment);
 
 setup.querySelector('.setup-similar').classList.remove('hidden');
