@@ -56,9 +56,7 @@ var drawColumns = function (ctx, names, times) {
 var drawColumn = function (ctx, name, time, timesArray, index) {
   var maxTime = getMaxElement(timesArray);
 
-  var getColumnX = function (i) {
-    return PADDING_LEFT + (i * COLUMN_WIDTH + i * GAP_COLUMN);
-  };
+  var columnX = PADDING_LEFT + index * (COLUMN_WIDTH + GAP_COLUMN);
 
   var getColumnY = function (timeText) {
     return Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * timeText) / maxTime));
@@ -73,7 +71,7 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
   };
 
   var getColorColumn = function () {
-    return 'hsl(240, ' + getRandomInt(1, 100) + '%, ' + '100%);';
+    return 'hsl(240, ' + getRandomInt(1, 100) + '%, ' + '50%)';
     // return 'rgb(0, 0, ' + getRandomInt(100, 255) + ')';
   };
 
@@ -94,16 +92,15 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
   // Наша формула для Y времени: YКолонки - отступТекстаОтКолонки (минус потому что координаты идут сверху внизу) +
   //
 
-  drawText(ctx, name, getColumnX(index), getColumnNameY());
-  drawText(ctx, Math.floor(time), getColumnX(index), getColumnTimeY(time));
+  drawText(ctx, name, columnX, getColumnNameY());
+  drawText(ctx, Math.floor(time), columnX, getColumnTimeY(time));
 
   if (name === 'Вы') {
     ctx.fillStyle = 'rgba(255, 0, 0, 1)';
   } else {
-    console.log(getColorColumn());
     ctx.fillStyle = getColorColumn();
   }
-  ctx.fillRect(getColumnX(index), getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
+  ctx.fillRect(columnX, getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
 
   // Рисуем колонку, внутри будет простой ctx.fillRect
   // Тебе понадобится функция, которая будет получать текст в зависимости от имени
