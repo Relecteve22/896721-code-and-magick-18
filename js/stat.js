@@ -58,57 +58,17 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
 
   var columnX = PADDING_LEFT + index * (COLUMN_WIDTH + GAP_COLUMN);
 
-  var getColumnY = function (timeText) {
-    return Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * timeText) / maxTime));
-  };
+  var getColumnY = Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * time) / maxTime));
 
-  var getColumnNameY = function () {
-    return PADDING_TOP + MAX_COLUMN_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + 20;
-  };
+  var getColumnNameY = PADDING_TOP + MAX_COLUMN_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + 20;
 
-  var getColumnTimeY = function (timeIndex) {
-    return getColumnY(timeIndex) - OFFSET_TEXT_FROM_COLUMNS;
-  };
+  var getColumnTimeY = getColumnY - OFFSET_TEXT_FROM_COLUMNS;
 
-  var getColorColumn = function () {
-    return 'hsl(240, ' + getRandomInt(1, 100) + '%, ' + '50%)';
-    // return 'rgb(0, 0, ' + getRandomInt(100, 255) + ')';
-  };
+  drawText(ctx, name, columnX, getColumnNameY);
+  drawText(ctx, Math.floor(time), columnX, getColumnTimeY);
 
-  // осталось:
-  // вывести колонку на первое место с именем 'вы'
-  // и зависимости от колонки показовать цвет
-
-  // var jfi = 50;
-  // var numvk = 100;
-  // for (var i = 0; i < name.length; i++) {
-  //   ctx.fillRect(numvk + jfi, 80, 40, (MAX_COLUMN_HEIGHT * Math.floor(time[i])) / maxTime);
-  //   jfi = jfi + 50;
-  // }
-
-  // Наша формула для X: index * ШК + index * ОК — можно написать функцию getColumnX +
-  // Наша формула для Y имени: ? — можно написать функцию getColumnNameY +
-  // Наша формуля для Y колонки: ? — можно написать функцию getColumnY +
-  // Наша формула для Y времени: YКолонки - отступТекстаОтКолонки (минус потому что координаты идут сверху внизу) +
-  //
-
-  drawText(ctx, name, columnX, getColumnNameY());
-  drawText(ctx, Math.floor(time), columnX, getColumnTimeY(time));
-
-  if (name === 'Вы') {
-    ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-  } else {
-    ctx.fillStyle = getColorColumn();
-  }
-  ctx.fillRect(columnX, getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
-
-  // Рисуем колонку, внутри будет простой ctx.fillRect
-  // Тебе понадобится функция, которая будет получать текст в зависимости от имени
-  // Для всех игроков кроме Вы, можно воспользоваться такой формулой расчета цвета:
-  // return 'rgb(0, 0, ' + случайноеЧислоОт100До255Включительно + ')';
-  // Пригодится и отдельная функция для случайного числа
-  // Но расчетом цвета можно заняться в самом конце
-  // drawColumn(ctx, getColumnX(index), вычисленныйYКолонки, расчитанныйЦветКолонки); ----------
+  ctx.fillStyle = name === 'Вы' ? 'rgb(255, 0, 0)' : 'hsl(240, ' + getRandomInt(1, 100) + '%, ' + '50%)';
+  ctx.fillRect(columnX, getColumnY, 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
 };
 
 window.renderStatistics = function (ctx, names, times) {
