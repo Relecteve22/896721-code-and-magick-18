@@ -74,6 +74,7 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
 
   var getColorColumn = function () {
     return 'hsl(240, ' + getRandomInt(1, 100) + '%, ' + '100%);';
+    // return 'rgb(0, 0, ' + getRandomInt(100, 255) + ')';
   };
 
   // осталось:
@@ -102,7 +103,6 @@ var drawColumn = function (ctx, name, time, timesArray, index) {
     console.log(getColorColumn());
     ctx.fillStyle = getColorColumn();
   }
-
   ctx.fillRect(getColumnX(index), getColumnY(time), 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
 
   // Рисуем колонку, внутри будет простой ctx.fillRect
