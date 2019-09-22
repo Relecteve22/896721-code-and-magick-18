@@ -50,7 +50,6 @@ var renderWizard = function (wizard) {
 for (var i = 0; i < 4; i++) {
   fragment.appendChild(renderWizard(creatArray()));
 }
-console.log(creatArray());
 similarListElement.appendChild(fragment);
 
 setup.querySelector('.setup-similar').classList.remove('hidden');
