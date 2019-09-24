@@ -53,39 +53,39 @@ var drawColumns = function (ctx, names, times) {
   }
 };
 
+var drawBorder = function (ctx) {
+  ctx.beginPath();
+  ctx.moveTo(100, 10);
+  ctx.lineTo(100, 280);
+  ctx.lineTo(520, 280);
+  ctx.lineTo(520, 10);
+  ctx.lineTo(100, 10);
+  ctx.stroke();
+};
+
 var drawColumn = function (ctx, name, time, timesArray, index) {
   var maxTime = getMaxElement(timesArray);
 
   var columnX = PADDING_LEFT + index * (COLUMN_WIDTH + GAP_COLUMN);
 
-  var getColumnY = Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * time) / maxTime));
+  var columnY = Math.floor(PADDING_TOP + TEXT_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + (MAX_COLUMN_HEIGHT - (MAX_COLUMN_HEIGHT * time) / maxTime));
 
-  var getColumnNameY = PADDING_TOP + MAX_COLUMN_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + 20;
+  var columnNameY = PADDING_TOP + MAX_COLUMN_HEIGHT + OFFSET_TEXT_FROM_COLUMNS + 20;
 
-  var getColumnTimeY = getColumnY - OFFSET_TEXT_FROM_COLUMNS;
+  var columnTimeY = columnY - OFFSET_TEXT_FROM_COLUMNS;
 
-  drawText(ctx, name, columnX, getColumnNameY);
-  drawText(ctx, Math.floor(time), columnX, getColumnTimeY);
+  drawText(ctx, name, columnX, columnNameY);
+  drawText(ctx, Math.floor(time), columnX, columnTimeY);
 
   ctx.fillStyle = name === 'Вы' ? 'rgb(255, 0, 0)' : 'hsl(240, ' + getRandomInt(1, 100) + '%, ' + '50%)';
-  ctx.fillRect(columnX, getColumnY, 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
+  ctx.fillRect(columnX, columnY, 40, (MAX_COLUMN_HEIGHT * time) / maxTime);
 };
 
 window.renderStatistics = function (ctx, names, times) {
   drawCloud(ctx, COORDINATE_X_CLOUD + GAP_CLOUD, COORDINATE_Y_CLOUD + GAP_CLOUD, COLOR_SHADEOW);
   drawCloud(ctx, COORDINATE_X_CLOUD, COORDINATE_Y_CLOUD, COLOR_CLOUD);
 
-  var drawBorder = function () {
-    ctx.beginPath();
-    ctx.moveTo(100, 10);
-    ctx.lineTo(100, 280);
-    ctx.lineTo(520, 280);
-    ctx.lineTo(520, 10);
-    ctx.lineTo(100, 10);
-    ctx.stroke();
-  };
-
-  drawBorder();
+  drawBorder(ctx);
 
   drawText(ctx, 'Ура вы победили!', 120, 35);
   drawText(ctx, 'Список результатов:', 120, 55);
