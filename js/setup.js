@@ -117,3 +117,4 @@ wizardFireballWrap.addEventListener('click', function () {
   var valueWizard = wizardFireballWrap.style.background = getRandomElements(WIZARD_FIREBALL_WRAP_COLORS);
   wizardFireballWrap.querySelector('input').value = valueWizard;
 });
+// комменнтраий
