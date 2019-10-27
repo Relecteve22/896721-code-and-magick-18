@@ -1,69 +1,104 @@
 'use strict';
 
 (function () {
-  var NAME_WIZARDS = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var SUR_NAME = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-  var COATS_COLOR = ['rgb(101, 137, 164,)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-  var EAEYS_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
-  var fragment = document.createDocumentFragment();
-  var setup = document.querySelector('.setup');
-  var similarListElement = setup.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
-  setup.classList.remove('hidden');
-
-  var getRandomInt = function (min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+  var setupDialogElement = document.querySelector('.setup');
+  var dialogHandler = setupDialogElement.querySelector('.upload');
+  var defaultCoordsPopup = {
+    x: '50',
+    y: '80'
   };
 
-  var getRandomElements = function (array) {
-    return array[getRandomInt(0, array.length - 1)];
+  var dropCoordsDefaultPopup = function () {
+    setupDialogElement.style.top = defaultCoordsPopup.y + 'px';
+    setupDialogElement.style.left = defaultCoordsPopup.x + '%';
   };
 
-  var getWizards = function () {
-    return {
-      name: getRandomElements(NAME_WIZARDS),
-      surName: getRandomElements(SUR_NAME),
-      coatColor: getRandomElements(COATS_COLOR),
-      eyesColor: getRandomElements(EAEYS_COLOR)
+  var popupCloseHandler = function () {
+    window.setup.popup.classList.add('hidden');
+    document.addEventListener('keydown', popupEscPressHandler);
+    dropCoordsDefaultPopup();
+  };
+  var popupEscPressHandler = function (evt) {
+    if (evt.keyCode === window.setup.ESC_KEYCODE) {
+      popupCloseHandler();
+    }
+  };
+  var popupOpenHandler = function () {
+    window.setup.popup.classList.remove('hidden');
+    document.addEventListener('keydown', popupEscPressHandler);
+    dropCoordsDefaultPopup();
+  };
+  window.setup.openPopup.addEventListener('click', function () {
+    popupOpenHandler();
+  });
+
+  window.setup.openPopup.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.setup.ENTER_KEYCODE) {
+      popupOpenHandler();
+    }
+  });
+  window.setup.closePopup.addEventListener('keydown', function (evt) {
+    if (evt.keyCode === window.setup.ENTER_KEYCODE) {
+      popupCloseHandler();
+    }
+  });
+  window.setup.closePopup.addEventListener('click', function () {
+    popupCloseHandler();
+  });
+  window.setup.setupUserName.addEventListener('focus', function () {
+    document.removeEventListener('keydown', popupEscPressHandler);
+  });
+
+  window.setup.setupUserName.addEventListener('blur', function () {
+    document.addEventListener('keydown', popupEscPressHandler);
+  });
+
+  dialogHandler.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
     };
-  };
 
-  var createArray = function () {
-    var wizards = [];
-    for (var i = 0; i < NAME_WIZARDS.length; i++) {
-      wizards[i] = getWizards();
-    }
-    return wizards;
-  };
+    var dragged = false;
 
-  var renderWizard = function (wizard, index) {
-    var wizardElement = window.dialog.similarWizardTemplate.cloneNode(true);
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      dragged = true;
 
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard[index].name + ' ' + wizard[index].surName;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard[index].coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard[index].eyesColor;
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
 
-    return wizardElement;
-  };
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
 
-  var renderWizards = function () {
-    for (var i = 0; i < 4; i++) {
-      fragment.appendChild(renderWizard(createArray(), i));
-    }
-    return fragment;
-  };
+      setupDialogElement.style.top = (setupDialogElement.offsetTop - shift.y) + 'px';
+      setupDialogElement.style.left = (setupDialogElement.offsetLeft - shift.x) + 'px';
 
-  similarListElement.appendChild(renderWizards());
+    };
 
-  setup.querySelector('.setup-similar').classList.remove('hidden');
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
 
-  window.dialog = {
-    fragment: fragment,
-    setup: setup,
-    similarListElement: similarListElement,
-    similarWizardTemplate: similarWizardTemplate
-  };
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        var onClickPreventDefault = function (evt) {
+          evt.preventDefault();
+          dialogHandler.removeEventListener('click', onClickPreventDefault);
+        };
+        dialogHandler.addEventListener('click', onClickPreventDefault);
+      }
+
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
 })();
