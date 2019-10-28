@@ -8,6 +8,7 @@
   var SUR_NAME = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
   var COATS_COLOR = ['rgb(101, 137, 164,)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var EAEYS_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
+  var OTHER_WIZARDS = 4;
 
   var getWizards = function () {
     return {
@@ -34,7 +35,7 @@
     return wizardElement;
   };
   var renderWizards = function () {
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < OTHER_WIZARDS; i++) {
       fragment.appendChild(renderWizard(createArray(), i));
     }
     return similarListElement.appendChild(fragment);
