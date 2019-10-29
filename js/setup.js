@@ -50,6 +50,7 @@
     openPopup: openPopup,
     popup: popup,
     getRandomInt: getRandomInt,
-    getRandomElements: getRandomElements
+    getRandomElements: getRandomElements,
+    modalForm: modalForm
   };
 })();
