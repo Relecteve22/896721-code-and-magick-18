@@ -123,7 +123,7 @@
   });
 
   window.setup.modalForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(window.setup.modalForm), function (response) {
+    window.upload(new FormData(window.setup.modalForm), function () {
       window.setup.popup.classList.add('hidden');
     }, window.otherWizards.errorHandler);
     evt.preventDefault();
