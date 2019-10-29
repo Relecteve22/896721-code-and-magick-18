@@ -3,10 +3,16 @@
 (function () {
   var setupDialogElement = document.querySelector('.setup');
   var dialogHandler = setupDialogElement.querySelector('.upload');
+  // var POPUP_WIDTH = setupDialogElement.OffsetWidth;
+  // var POPUP_HEIGHT = setupDialogElement.OffsetHeight;
   var defaultCoordsPopup = {
     x: '50',
     y: '80'
   };
+  var MIN_Y_PIN = 0;
+  // var MAX_Y_PIN = 630;
+  // var MIN_X_PIN = 395;
+  // var MAX_X_PIN = 1120;
 
   var dropCoordsDefaultPopup = function () {
     setupDialogElement.style.top = defaultCoordsPopup.y + 'px';
@@ -80,6 +86,20 @@
       setupDialogElement.style.top = (setupDialogElement.offsetTop - shift.y) + 'px';
       setupDialogElement.style.left = (setupDialogElement.offsetLeft - shift.x) + 'px';
 
+      if ((setupDialogElement.offsetTop - shift.y) < MIN_Y_PIN) {
+        setupDialogElement.style.top = 0;
+      }
+      if ((setupDialogElement.offsetTop - shift.y) < MIN_Y_PIN) {
+        setupDialogElement.style.top = 0;
+      }
+
+      // if ((setupDialogElement.offsetLeft - shift.x) < MIN_X_PIN) {
+      // setupDialogElement.style.left = 395;
+      // console.log('ggg');
+      // }
+      // if (((setupDialogElement.offsetTop - shift.y) + POPUP_HEIGHT) < MAX_Y_PIN) {
+      // setupDialogElement.style.bottom = 0;
+      // }
     };
 
     var onMouseUp = function (upEvt) {
@@ -100,5 +120,12 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  });
+
+  window.setup.modalForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(window.setup.modalForm), function (response) {
+      window.setup.popup.classList.add('hidden');
+    }, window.otherWizards.errorHandler);
+    evt.preventDefault();
   });
 })();
